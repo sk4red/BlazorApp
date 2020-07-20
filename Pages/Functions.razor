@@ -1,0 +1,39 @@
+﻿@page "/functions"
+@inject HttpClient Http
+
+<h1>Azure Function Data</h1>
+
+<p>This component demonstrates fetching data from Azure Functions.</p>
+
+<p>Status: @message</p>
+
+@if (message == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+   <p>The message is: @message</p>
+}
+
+@functions {
+
+    string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            message = await Http.GetStringAsync("https://furmfunctions.azurewebsites.net/api/HttpTrigger");
+          
+        }
+        catch (HttpRequestException ex)
+        {
+            string strresult = ex.ToString();
+            Console.WriteLine(ex.ToString());
+        
+        }
+
+
+    }
+}
